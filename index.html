@@ -75,16 +75,23 @@ let appState = {
     totalAsked: 0
 };
 
-// CSV szöveg feldolgozása (TAB vagy VESSZŐ elválasztó)
+// CSV szöveg feldolgozása (TAB, VESSZŐ vagy PONTOSVESSZŐ elválasztó)
 function parseCSVText(text) {
     const lines = text.trim().split('\n');
     if (lines.length < 2) return [];
 
     const loadedQuestions = [];
     
-    // Automatikus elválasztó detektálás
-    const delimiter = lines[0].includes('\t') ? '\t' : ',';
-    console.log(`📄 CSV elválasztó: ${delimiter === '\t' ? 'TAB' : 'VESSZŐ'}`);
+    // Automatikus elválasztó detektálás (TAB, pontosvessző vagy vessző)
+    let delimiter = ',';
+    if (lines[0].includes('\t')) {
+        delimiter = '\t';
+    } else if (lines[0].includes(';')) {
+        delimiter = ';';
+    }
+    
+    const delimiterName = delimiter === '\t' ? 'TAB' : delimiter === ';' ? 'PONTOSVESSZŐ' : 'VESSZŐ';
+    console.log(`📄 CSV elválasztó: ${delimiterName}`);
     
     for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(delimiter);
@@ -805,4 +812,5 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 </body>
+
 </html>
