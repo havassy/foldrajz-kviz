@@ -62,7 +62,7 @@ function parseCSVText(text) {
     const loadedQuestions = [];
     
     for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(/[\t]/);
+        const values = lines[i].split(/[,\t]/);
         
         if (values.length >= 3) {
             loadedQuestions.push({
@@ -861,4 +861,5 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 </body>
+
 </html>
