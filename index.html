@@ -35,7 +35,7 @@ let WORKING_MODEL = null;
 // ALKALMAZÁS LOGIKA
 // ============================================
 let appState = {
-    apiKey: localStorage.getItem('gemini_api_key') || '',
+    apiKey: localStorage.getItem('gemini_api_key') || 'AIzaSy...AIzaSyBWBao-YGhyhxgBmv074kluPV-wSKHS9O0',
     isSetupComplete: false,
     questions: [],
     filteredQuestions: [],
@@ -107,13 +107,13 @@ async function loadQuestionsFromCSV() {
         
         console.log(`✅ ${parsed.length} kérdés betöltve!`);
         
-        // Ha van API kulcs, kezdjük
-        if (appState.apiKey) {
-            appState.isSetupComplete = true;
-            selectRandomQuestion();
-        } else {
-            render();
-        }
+        // Automatikus indítás ha van API kulcs
+    if (appState.apiKey) {
+        appState.isSetupComplete = true;
+        selectRandomQuestion();
+    } else {
+        render();
+    }
         
     } catch (error) {
         console.error('CSV betöltési hiba:', error);
@@ -863,3 +863,4 @@ window.addEventListener('DOMContentLoaded', () => {
 </body>
 
 </html>
+
