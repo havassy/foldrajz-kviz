@@ -45,10 +45,6 @@ function getNextApiKey() {
 // ÚJ MODELLNEVEK - 2025 október
 const MODELS_TO_TRY = [
     'gemini-2.5-flash',           // Stable, leggyorsabb
-    'gemini-2.0-flash',           // Stable
-    'gemini-2.5-pro',             // Stable, legerősebb
-    'gemini-2.0-flash-exp',       // Experimental
-    'gemini-flash-latest'         // Mindig a legújabb
 ];
 
 let WORKING_MODEL = null;
@@ -454,6 +450,22 @@ Válaszolj az alábbi JSON formátumban (CSAK JSON-t írj, semmi mást):
 ⚠️ Ha a levonások miatt negatív lenne a pontszám → írj 0-t!
 ⚠️ A "hianyossagok" mezőben KONKRÉTAN nevezd meg, mi hiányzik vagy miért vonódik le pont!`;
 
+// Ha már van működő modell, csak azt használjuk!
+if (WORKING_MODEL) {
+    try {
+        const result = await tryModel(WORKING_MODEL, prompt);
+        appState.evaluation = result;
+        appState.isLoading = false;
+        appState.errorMessage = '';
+        appState.totalAsked++;
+        render();
+        return;
+    } catch (error) {
+        console.log(`A korábban működő modell (${WORKING_MODEL}) most hibát adott, próbálunk másikat...`);
+        WORKING_MODEL = null;
+    }
+}
+    
     // Próbáljuk végig a modelleket MIND A 3 API KULCCSAL
     let lastError = null;
     
@@ -763,4 +775,5 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 </body>
+
 </html>
